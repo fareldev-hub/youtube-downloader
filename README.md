@@ -21,7 +21,7 @@ Mendukung penggunaan sebagai **website** maupun **API** untuk developer.
    ```bash
    git clone https://github.com/fareldev-hub/youtube-downloader.git
    cd youtube-downloader
-````
+   ```
 ![farel api](screenshot/terminal.jpg)
 
 2. Install dependencies:
@@ -150,5 +150,3 @@ const axios = require("axios");
 
 **Farel Developer**
 [🌐 Web](https://farel-alfareza-hub.vercel.app)
-
-```
