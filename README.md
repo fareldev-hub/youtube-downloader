@@ -1,5 +1,4 @@
-````markdown
-# 🎬 YouTube Downloader (ytmp3 / ytmp4)
+### 🎬 YouTube Downloader (ytmp3 / ytmp4)
 
 Proyek ini adalah aplikasi web sederhana untuk mengunduh **video YouTube (MP4)** atau **audio YouTube (MP3)**.  
 Dibangun menggunakan **Node.js + Express + ytdl-core**.  
@@ -18,10 +17,11 @@ Mendukung penggunaan sebagai **website** maupun **API** untuk developer.
 ## 📂 Instalasi
 
 1. Clone repository:
-   ```bash
+   ```
    git clone https://github.com/fareldev-hub/youtube-downloader.git
    cd youtube-downloader
-   ```
+````
+   ````
 ![farel api](screenshot/terminal.jpg)
 
 2. Install dependencies:
