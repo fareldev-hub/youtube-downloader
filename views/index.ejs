@@ -1,1 +1,23 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Downloader</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <h1>YouTube Downloader</h1>
+  <p>Script By Farel Developer</p>
+</header>
+<form action="/download" method="post">
+    <input type="text" name="url" placeholder="Masukkan URL YouTube" required>
+    <select name="type">
+        <option value="ytmp3">Audio (MP3)</option>
+        <option value="ytmp4">Video (MP4)</option>
+    </select>
+    <button type="submit">Download</button>
+</form>
+</body>
+</html>
