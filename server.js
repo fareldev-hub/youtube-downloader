@@ -1,5 +1,5 @@
 const express = require('express');
-const ytdl = require('@distube/ytdl-core'); // ✅ ganti ke fork
+const ytdl = require('@distube/ytdl-core'); // ✅ fork stabil
 const path = require('path');
 const cors = require('cors');
 
@@ -11,6 +11,18 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
+// ✅ Tambahkan headers agar tidak dianggap bot
+const ytdlOptions = {
+    requestOptions: {
+        headers: {
+            'User-Agent':
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36',
+            // Kalau masih error, tambahkan cookie YouTube (copy dari browser login)
+            // 'Cookie': 'VISITOR_INFO1_LIVE=xxxx; PREF=xxxx; SID=xxxx; ...'
+        }
+    }
+};
+
 // Routing halaman utama
 app.get('/', (req, res) => {
     res.render('index');
@@ -20,16 +32,16 @@ app.get('/', (req, res) => {
 app.post('/download', async (req, res) => {
     const url = req.body.url;
     const type = req.body.type; // ytmp3 / ytmp4
-    
+
     if (!ytdl.validateURL(url)) return res.send("URL tidak valid");
     try {
-        const info = await ytdl.getInfo(url);
+        const info = await ytdl.getInfo(url, ytdlOptions);
         const rawTitle = info.videoDetails.title || 'video';
-        const title = rawTitle.replace(/[^\w\s\-().]/g, '').slice(0, 180); // aman untuk nama file
+        const title = rawTitle.replace(/[^\w\s\-().]/g, '').slice(0, 180);
 
         if (type === 'ytmp3') {
             res.setHeader('Content-Disposition', `attachment; filename="${title}.mp3"`);
-            ytdl(url, { filter: 'audioonly', quality: 'highestaudio' })
+            ytdl(url, { filter: 'audioonly', quality: 'highestaudio', ...ytdlOptions })
               .on('error', err => {
                   console.error('ytdl error:', err);
                   if (!res.headersSent) res.status(500).send('Gagal unduh audio');
@@ -37,7 +49,7 @@ app.post('/download', async (req, res) => {
               .pipe(res);
         } else {
             res.setHeader('Content-Disposition', `attachment; filename="${title}.mp4"`);
-            ytdl(url, { quality: 'highestvideo' })
+            ytdl(url, { quality: 'highestvideo', ...ytdlOptions })
               .on('error', err => {
                   console.error('ytdl error:', err);
                   if (!res.headersSent) res.status(500).send('Gagal unduh video');
@@ -58,7 +70,7 @@ app.get('/api/download', async (req, res) => {
     if (!ytdl.validateURL(url)) return res.status(400).json({ error: "URL tidak valid" });
 
     try {
-        const info = await ytdl.getInfo(url);
+        const info = await ytdl.getInfo(url, ytdlOptions);
         const rawTitle = info.videoDetails.title || 'video';
         const title = rawTitle.replace(/[^\w\s\-().]/g, '').slice(0, 180);
 
